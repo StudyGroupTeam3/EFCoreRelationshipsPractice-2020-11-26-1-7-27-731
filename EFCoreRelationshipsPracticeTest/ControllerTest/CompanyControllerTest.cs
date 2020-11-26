@@ -182,6 +182,41 @@ namespace EFCoreRelationshipsPracticeTest
             var scopedServices = scope.ServiceProvider;
 
             CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
+
+            CompanyService companyService = new CompanyService(context);
+            List<CompanyDto> companyDtos = GiveMeSomeCompanies();
+            foreach (var company in companyDtos)
+            {
+                await companyService.AddCompany(company);
+            }
+
+            CompanyDto companyDto = new CompanyDto();
+            companyDto.Name = "Alibaba";
+            companyDto.Employees = new List<EmployeeDto>()
+            {
+                new EmployeeDto()
+                {
+                    Name = "Jordan",
+                    Age = 18
+                }
+            };
+
+            companyDto.Profile = new ProfileDto()
+            {
+                RegisteredCapital = 423455,
+                CertId = "234",
+            };
+            var testID = await companyService.AddCompany(companyDto);
+
+            //When
+            CompanyDto actualCompany = await companyService.GetById(testID);
+
+            //Then
+            Assert.Equal(companyDto, actualCompany);
+        }
+
+        private List<CompanyDto> GiveMeSomeCompanies()
+        {
             CompanyDto companyDto = new CompanyDto();
             companyDto.Name = "FaceBook";
             companyDto.Employees = new List<EmployeeDto>()
@@ -199,15 +234,29 @@ namespace EFCoreRelationshipsPracticeTest
                 CertId = "1020",
             };
 
-            CompanyService companyService = new CompanyService(context);
-            await companyService.AddCompany(companyDto);
-            var testID = await companyService.AddCompany(companyDto);
+            CompanyDto companyDto1 = new CompanyDto();
+            companyDto1.Name = "Amazon";
+            companyDto1.Employees = new List<EmployeeDto>()
+            {
+                new EmployeeDto()
+                {
+                    Name = "Chris",
+                    Age = 37
+                },
+                new EmployeeDto()
+                {
+                Name = "Jack",
+                Age = 25
+                }
+            };
 
-            //When
-            CompanyDto actualCompany = await companyService.GetById(testID);
+            companyDto1.Profile = new ProfileDto()
+            {
+                RegisteredCapital = 23423,
+                CertId = "124345",
+            };
 
-            //Then
-            Assert.Equal(companyDto, actualCompany);
+            return new List<CompanyDto>() { companyDto, companyDto1 };
         }
     }
 }
