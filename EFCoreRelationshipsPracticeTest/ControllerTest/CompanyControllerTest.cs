@@ -144,10 +144,7 @@ namespace EFCoreRelationshipsPracticeTest
         public async Task Should_create_company_success_via_company_service()
         {
             //Given
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
+            var context = GetCompanyDbContext();
             CompanyDto companyDto = new CompanyDto();
             companyDto.Name = "IBM";
             companyDto.Employees = new List<EmployeeDto>()
@@ -178,11 +175,7 @@ namespace EFCoreRelationshipsPracticeTest
         public async Task Should_Get_company_By_ID_success_via_company_service()
         {
             //Given
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
-
+            var context = GetCompanyDbContext();
             CompanyService companyService = new CompanyService(context);
             List<CompanyDto> companyDtos = GiveMeSomeCompanies();
             foreach (var company in companyDtos)
@@ -219,11 +212,7 @@ namespace EFCoreRelationshipsPracticeTest
         public async Task Should_Get_AllCompany_success_via_company_service()
         {
             //Given
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
-
+            var context = GetCompanyDbContext();
             CompanyService companyService = new CompanyService(context);
             List<CompanyDto> companyDtos = GiveMeSomeCompanies();
             foreach (var company in companyDtos)
@@ -242,11 +231,7 @@ namespace EFCoreRelationshipsPracticeTest
         public async Task Should_Delete_Company_ByID_success_via_companyService()
         {
             //Given
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
-
+            var context = GetCompanyDbContext();
             CompanyService companyService = new CompanyService(context);
             List<CompanyDto> companyDtos = GiveMeSomeCompanies();
             int testID = 0;
@@ -260,6 +245,14 @@ namespace EFCoreRelationshipsPracticeTest
 
             //Then
             Assert.Equal(1, context.Companies.Count());
+        }
+
+        private CompanyDbContext GetCompanyDbContext()
+        {
+            var scope = Factory.Services.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+            CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
+            return context;
         }
 
         private List<CompanyDto> GiveMeSomeCompanies()
