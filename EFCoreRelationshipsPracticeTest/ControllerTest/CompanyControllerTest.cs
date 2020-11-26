@@ -168,5 +168,63 @@ namespace EFCoreRelationshipsPracticeTest
             // then
             Assert.Equal(2, companies.Count);
         }
+
+        [Fact]
+        public async Task Should_get_company_by_id_via_company_service()
+        {
+            // given
+            var scope = Factory.Services.CreateScope();
+            var scopeService = scope.ServiceProvider;
+            var context = scopeService.GetRequiredService<CompanyDbContext>();
+            var companyService = new CompanyService(context);
+            var companyDto = new CompanyDto
+            {
+                Name = "IBM",
+                Employees = new List<EmployeeDto>()
+                {
+                    new EmployeeDto() { Name = "Tom", Age = 19 },
+                    new EmployeeDto() { Name = "Tom2", Age = 20 },
+                },
+                Profile = new ProfileDto() { RegisteredCapital = 100010, CertId = "100", },
+            };
+
+            // when
+            await companyService.AddCompany(companyDto);
+            var company = await companyService.GetById(1);
+
+            // then
+            Assert.Equal(companyDto.Name, company.Name);
+            Assert.Equal(companyDto.Profile.CertId, company.Profile.CertId);
+            Assert.Equal(companyDto.Employees.Count, company.Employees.Count);
+        }
+
+        [Fact]
+        public async Task Should_delete_company_by_id_via_company_service()
+        {
+            // given
+            var scope = Factory.Services.CreateScope();
+            var scopeService = scope.ServiceProvider;
+            var context = scopeService.GetRequiredService<CompanyDbContext>();
+            var companyService = new CompanyService(context);
+            var companyDto = new CompanyDto
+            {
+                Name = "IBM",
+                Employees = new List<EmployeeDto>()
+                {
+                    new EmployeeDto() { Name = "Tom", Age = 19 },
+                    new EmployeeDto() { Name = "Tom2", Age = 20 },
+                },
+                Profile = new ProfileDto() { RegisteredCapital = 100010, CertId = "100", },
+            };
+
+            // when
+            await companyService.AddCompany(companyDto);
+            await companyService.DeleteCompany(context.Companies.First().Id);
+
+            // then
+            Assert.Equal(0, context.Companies.Count());
+            Assert.Equal(0, context.Employees.Count());
+            Assert.Equal(0, context.Profiles.Count());
+        }
     }
 }
