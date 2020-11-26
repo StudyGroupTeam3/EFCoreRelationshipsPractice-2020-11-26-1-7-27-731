@@ -32,11 +32,7 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task<int> AddCompany(CompanyDto companyDto)
         {
-            CompanyEntity companyEntity = new CompanyEntity()
-            {
-                Name = companyDto.Name,
-            };
-
+            CompanyEntity companyEntity = new CompanyEntity(companyDto);
             await this.companyDbContext.Companies.AddAsync(companyEntity);
             await this.companyDbContext.SaveChangesAsync();
             return companyEntity.Id;
