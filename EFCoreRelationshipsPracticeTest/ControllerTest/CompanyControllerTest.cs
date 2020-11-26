@@ -137,11 +137,13 @@ namespace EFCoreRelationshipsPracticeTest
         }
 
         [Fact]
-        public async Task Should_create_company_using_CompanyServices_AddCompany_success()
+        public async Task Should_create_company_using_CompanyService_AddCompany_success()
         {
             var scope = Factory.Services.CreateScope();
             var scopedServices = scope.ServiceProvider;
             var companyContext = scopedServices.GetRequiredService<CompanyDbContext>();
+            companyContext.Database.EnsureDeleted();
+            companyContext.Database.EnsureCreated();
 
             CompanyDto companyDto = new CompanyDto();
             companyDto.Name = "IBM";
@@ -167,11 +169,13 @@ namespace EFCoreRelationshipsPracticeTest
         }
 
         [Fact]
-        public async Task Should_get_a_company_by_id_using_CompanyServices_GetById_success()
+        public async Task Should_get_a_company_by_id_using_CompanyService_GetById_success()
         {
             var scope = Factory.Services.CreateScope();
             var scopedServices = scope.ServiceProvider;
             var companyContext = scopedServices.GetRequiredService<CompanyDbContext>();
+            companyContext.Database.EnsureDeleted();
+            companyContext.Database.EnsureCreated();
 
             CompanyDto companyDto = new CompanyDto();
             companyDto.Name = "IBM";
@@ -193,9 +197,46 @@ namespace EFCoreRelationshipsPracticeTest
             var companyService = new CompanyService(companyContext);
             await companyService.AddCompany(companyDto);
 
-            var actualCompanyDto = companyService.GetById(0);
+            var actualCompanyEntity = companyService.GetById(1);
 
-            Assert.Equal(1, actualCompanyDto.Id);
+            Assert.Equal(1, actualCompanyEntity.Id);
+        }
+
+        [Fact]
+        public async Task Should_delete_a_company_by_id_using_CompanyService_DeleteCompany_success()
+        {
+            var scope = Factory.Services.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+            var companyContext = scopedServices.GetRequiredService<CompanyDbContext>();
+            companyContext.Database.EnsureDeleted();
+            companyContext.Database.EnsureCreated();
+
+            CompanyDto companyDto = new CompanyDto();
+            companyDto.Name = "IBM";
+            companyDto.Employees = new List<EmployeeDto>()
+            {
+                new EmployeeDto()
+                {
+                    Name = "Tom",
+                    Age = 19,
+                },
+            };
+
+            companyDto.Profile = new ProfileDto()
+            {
+                RegisteredCapital = 100010,
+                CertId = "100",
+            };
+
+            var companyService = new CompanyService(companyContext);
+            await companyService.AddCompany(companyDto);
+
+            await companyService.DeleteCompany(1);
+
+            var i = companyContext.Employees.Count();
+            var j = companyContext.Profiles.Count();
+
+            Assert.Equal(0, companyContext.Companies.Count());
         }
     }
 }
