@@ -54,7 +54,7 @@ namespace EFCoreRelationshipsPractice
                 {
                     //context.Database.EnsureDeleted();
                     //context.Database.EnsureCreated();
-                    context.Database.Migrate(); // 每一回启动都会调用Migrations里面的所有脚本
+                    //context.Database.Migrate(); // 每一回启动都会调用Migrations里面的所有脚本
                 }
             }
 

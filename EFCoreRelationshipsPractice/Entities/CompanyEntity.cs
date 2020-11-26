@@ -16,7 +16,7 @@ namespace EFCoreRelationshipsPractice.Entities
         {
             this.Name = companyDto.Name;
             this.Profile = new ProfileEntity(companyDto.Profile);
-            this.Employees = companyDto.Employees.Select(employeeDto => new EmployeeEntity(employeeDto)).ToList();
+            this.Employees = companyDto.Employees.Select(employeeDto => new EmployeeEntity(employeeDto)).ToList(); // 将每一个employeeDto转化成EmployeeEntity的类型
         }
 
         public int Id { get; set; }
@@ -25,41 +25,5 @@ namespace EFCoreRelationshipsPractice.Entities
 
         public ProfileEntity Profile { get; set; }
         public List<EmployeeEntity> Employees { get; set; }
-    }
-
-    public class ProfileEntity
-    {
-        public ProfileEntity()
-        {
-        }
-
-        public ProfileEntity(ProfileDto profileDto)
-        {
-            this.CertId = profileDto.CertId;
-            this.RegisteredCapital = profileDto.RegisteredCapital;
-        }
-
-        public int Id { get; set; }
-        public int RegisteredCapital { get; set; }
-        public string CertId { get; set; }
-    }
-
-    public class EmployeeEntity
-    {
-        private EmployeeDto employeeDto;
-
-        public EmployeeEntity()
-        {
-        }
-
-        public EmployeeEntity(EmployeeDto employeeDto)
-        {
-            this.Name = employeeDto.Name;
-            this.Age = employeeDto.Age;
-        }
-
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
     }
 }
