@@ -1,4 +1,4 @@
-﻿using EFCoreRelationshipsPractice.Entities;
+﻿using EFCoreRelationshipsPractice.Repository;
 
 namespace EFCoreRelationshipsPractice.Dtos
 {
