@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EFCoreRelationshipsPractice.Dtos;
+using EFCoreRelationshipsPractice.NewFolder;
 using EFCoreRelationshipsPractice.Repository;
 
 namespace EFCoreRelationshipsPractice.Services
@@ -11,7 +12,7 @@ namespace EFCoreRelationshipsPractice.Services
     {
         private readonly CompanyDbContext companyDbContext;
 
-        public CompanyService(CompanyDbContext companyDbContext)
+        public CompanyService(CompanyDbContext companyDbContext) //DbContext was created in the StartUp
         {
             this.companyDbContext = companyDbContext;
         }
@@ -28,7 +29,14 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task<int> AddCompany(CompanyDto companyDto)
         {
-            throw new NotImplementedException();
+            CompanyEntity company = new CompanyEntity()
+            {
+                Name = companyDto.Name
+            };
+
+            await this.companyDbContext.Companies.AddAsync(company);
+            await this.companyDbContext.SaveChangesAsync();
+            return company.ID;
         }
 
         public async Task DeleteCompany(int id)
