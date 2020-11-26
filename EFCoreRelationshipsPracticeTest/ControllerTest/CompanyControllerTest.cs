@@ -33,8 +33,8 @@ namespace EFCoreRelationshipsPracticeTest
                 new EmployeeDto()
                 {
                     Name = "Tom",
-                    Age = 19
-                }
+                    Age = 19,
+                },
             };
 
             companyDto.Profile = new ProfileDto()
@@ -78,8 +78,8 @@ namespace EFCoreRelationshipsPracticeTest
                 new EmployeeDto()
                 {
                     Name = "Tom",
-                    Age = 19
-                }
+                    Age = 19,
+                },
             };
 
             companyDto.Profile = new ProfileDto()
@@ -112,8 +112,8 @@ namespace EFCoreRelationshipsPracticeTest
                 new EmployeeDto()
                 {
                     Name = "Tom",
-                    Age = 19
-                }
+                    Age = 19,
+                },
             };
 
             companyDto.Profile = new ProfileDto()
