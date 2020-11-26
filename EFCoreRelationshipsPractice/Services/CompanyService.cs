@@ -21,7 +21,8 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task<List<CompanyDto>> GetAll()
         {
-            var companies = await companyDbContext.Companies.ToListAsync();
+            var companies = await companyDbContext.Companies.Include(company => company.ProfileEntity)
+                .Include(company => company.Employees).ToListAsync();
             return companies.Select(companyEntity => new CompanyDto(companyEntity)).ToList();
         }
 

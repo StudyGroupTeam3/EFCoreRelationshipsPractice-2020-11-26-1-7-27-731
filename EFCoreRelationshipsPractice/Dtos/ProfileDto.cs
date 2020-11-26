@@ -1,9 +1,17 @@
-﻿namespace EFCoreRelationshipsPractice.Dtos
+﻿using EFCoreRelationshipsPractice.Entities;
+
+namespace EFCoreRelationshipsPractice.Dtos
 {
     public class ProfileDto
     {
         public ProfileDto()
         {
+        }
+
+        public ProfileDto(ProfileEntity profile)
+        {
+            CertId = profile.CertId;
+            RegisteredCapital = profile.RegisteredCapital;
         }
 
         public int RegisteredCapital { get; set; }

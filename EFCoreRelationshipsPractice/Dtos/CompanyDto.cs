@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EFCoreRelationshipsPractice.Entities;
 
 namespace EFCoreRelationshipsPractice.Dtos
@@ -12,6 +13,8 @@ namespace EFCoreRelationshipsPractice.Dtos
         public CompanyDto(CompanyEntity companyEntity)
         {
             Name = companyEntity.Name;
+            Profile = companyEntity.ProfileEntity == null ? null : new ProfileDto(companyEntity.ProfileEntity);
+            Employees = companyEntity.Employees?.Select(employeeEntity => new EmployeeDto() { Age = employeeEntity.Age, Name = employeeEntity.Name }).ToList();
         }
 
         public string Name { get; set; }
