@@ -24,6 +24,8 @@ namespace EFCoreRelationshipsPracticeTest
     {
         private readonly HttpClient client;
         private readonly CompanyDto companyDto = new CompanyDto();
+        private readonly string httpContent;
+        private readonly StringContent content;
         public CompanyControllerTest(CustomWebApplicationFactory<Startup> factory) : base(factory)
         {
             client = GetClient();
@@ -41,13 +43,13 @@ namespace EFCoreRelationshipsPracticeTest
                 RegisteredCapital = 100010,
                 CertId = "100",
             };
+            httpContent = JsonConvert.SerializeObject(companyDto);
+            content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
         }
 
         [Fact]
         public async Task Should_create_company_employee_profile_success()
         {
-            var httpContent = JsonConvert.SerializeObject(companyDto);
-            StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
             await client.PostAsync("/companies", content);
 
             var allCompaniesResponse = await client.GetAsync("/companies");
@@ -75,9 +77,6 @@ namespace EFCoreRelationshipsPracticeTest
         [Fact]
         public async Task Should_delete_company_and_related_employee_and_profile_success()
         {
-            var httpContent = JsonConvert.SerializeObject(companyDto);
-            StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
-
             var response = await client.PostAsync("/companies", content);
             await client.DeleteAsync(response.Headers.Location);
             var allCompaniesResponse = await client.GetAsync("/companies");
@@ -91,8 +90,6 @@ namespace EFCoreRelationshipsPracticeTest
         [Fact]
         public async Task Should_create_many_companies_success()
         {
-            var httpContent = JsonConvert.SerializeObject(companyDto);
-            StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
             await client.PostAsync("/companies", content);
             await client.PostAsync("/companies", content);
 
