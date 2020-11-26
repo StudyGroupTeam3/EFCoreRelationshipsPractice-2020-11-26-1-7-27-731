@@ -17,18 +17,25 @@ namespace EFCoreRelationshipsPractice.NewFolder
         {
             Name = companyDto.Name;
             Profile = new ProfileEntity(companyDto);
+            Employees = companyDto.Employees.Select(employeeDto => new EmployeeEntity(employeeDto)).ToList();
         }
 
         public int ID { get; set; }
         public string Name { get; set; }
         public ProfileEntity Profile { get; set; }
-        public List<EmployeeEntity> Emlpoyees { get; set; }
+        public List<EmployeeEntity> Employees { get; set; }
     }
 
     public class EmployeeEntity
     {
         public EmployeeEntity()
         {
+        }
+
+        public EmployeeEntity(EmployeeDto employeeDto)
+        {
+            Name = employeeDto.Name;
+            Age = employeeDto.Age;
         }
 
         public int ID { get; set; }
