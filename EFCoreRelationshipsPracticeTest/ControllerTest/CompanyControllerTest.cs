@@ -183,29 +183,31 @@ namespace EFCoreRelationshipsPracticeTest
 
             CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
             CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
+            companyDto.Name = "FaceBook";
             companyDto.Employees = new List<EmployeeDto>()
             {
                 new EmployeeDto()
                 {
                     Name = "Tom",
-                    Age = 19
+                    Age = 37
                 }
             };
 
             companyDto.Profile = new ProfileDto()
             {
-                RegisteredCapital = 100010,
-                CertId = "100",
+                RegisteredCapital = 1000110,
+                CertId = "1020",
             };
 
             CompanyService companyService = new CompanyService(context);
+            await companyService.AddCompany(companyDto);
+            var testID = await companyService.AddCompany(companyDto);
 
             //When
-            await companyService.AddCompany(companyDto);
+            CompanyDto actualCompany = await companyService.GetById(testID);
 
             //Then
-            Assert.Equal(1, context.Companies.Count());
+            Assert.Equal(companyDto, actualCompany);
         }
     }
 }

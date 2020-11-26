@@ -22,5 +22,30 @@ namespace EFCoreRelationshipsPractice.Dtos
         public ProfileDto Profile { get; set; }
 
         public List<EmployeeDto> Employees { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            return Equals((CompanyDto)obj);
+        }
+
+        private bool Equals(CompanyDto other)
+        {
+            return Name == other.Name;
+        }
     }
 }
