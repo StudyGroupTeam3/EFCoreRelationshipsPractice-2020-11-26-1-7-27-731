@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using EFCoreRelationshipsPractice;
+using EFCoreRelationshipsPractice.Repository;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace EFCoreRelationshipsPracticeTest
@@ -14,15 +16,15 @@ namespace EFCoreRelationshipsPracticeTest
 
         protected CustomWebApplicationFactory<Startup> Factory { get; }
 
-        public void Dispose()
+        public void Dispose() //  继承了IDisposable， 跑Xunit的时候，每次测试都会调Dispose方法，可以在Dispose方法中clean Evironment
         {
-            // var scope = Factory.Services.CreateScope();
-            // var scopedServices = scope.ServiceProvider;
-            // var context = scopedServices.GetRequiredService<CompanyDbContext>();
-            //
-            // context.Companies.RemoveRange(context.Companies);
-            //
-            // context.SaveChanges();
+            var scope = Factory.Services.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+            var context = scopedServices.GetRequiredService<CompanyDbContext>();
+
+            context.Companies.RemoveRange(context.Companies);
+
+            context.SaveChanges();
         }
 
         protected HttpClient GetClient()
