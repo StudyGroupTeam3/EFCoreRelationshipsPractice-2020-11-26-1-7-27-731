@@ -4,8 +4,9 @@ namespace EFCoreRelationshipsPractice.Dtos
 {
     public class CompanyDto
     {
-        public CompanyDto()
+        public CompanyDto(Entities.CompanyEntity companyEntity)
         {
+            this.Name = companyEntity.Name;
         }
 
         public string Name { get; set; }
