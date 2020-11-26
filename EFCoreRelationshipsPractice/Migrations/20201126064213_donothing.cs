@@ -2,7 +2,7 @@
 
 namespace EFCoreRelationshipsPractice.Migrations
 {
-    public partial class donothing : Migration
+    public partial class Donothing : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

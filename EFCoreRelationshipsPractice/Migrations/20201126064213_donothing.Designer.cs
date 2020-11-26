@@ -9,7 +9,7 @@ namespace EFCoreRelationshipsPractice.Migrations
 {
     [DbContext(typeof(CompanyDbContext))]
     [Migration("20201126064213_donothing")]
-    partial class donothing
+    partial class Donothing
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
