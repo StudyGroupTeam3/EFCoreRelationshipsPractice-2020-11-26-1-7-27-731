@@ -13,7 +13,7 @@ namespace EFCoreRelationshipsPractice.Services
     {
         private readonly CompanyDbContext companyDbContext;
 
-        public CompanyService(CompanyDbContext companyDbContext) //DbContext was created in the StartUp
+        public CompanyService(CompanyDbContext companyDbContext) //DbContext was created in the StartUp， This service should get all DB method-
         {
             this.companyDbContext = companyDbContext;
         }
