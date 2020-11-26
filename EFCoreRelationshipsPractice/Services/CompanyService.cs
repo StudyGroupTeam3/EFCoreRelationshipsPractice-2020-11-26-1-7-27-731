@@ -32,7 +32,7 @@ namespace EFCoreRelationshipsPractice.Services
             var foundCompanyEntity = await companyDbContext.Companies
                 .Include(company => company.ProfileEntity)
                 .Include(company => company.Employees)
-                .FirstOrDefaultAsync(companyEntity => companyEntity.Id == id);
+                .FirstAsync(companyEntity => companyEntity.Id == id);
             return new CompanyDto(foundCompanyEntity);
         }
 

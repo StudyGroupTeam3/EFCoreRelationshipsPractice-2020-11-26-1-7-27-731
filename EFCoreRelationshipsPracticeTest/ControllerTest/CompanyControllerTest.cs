@@ -181,8 +181,8 @@ namespace EFCoreRelationshipsPracticeTest
             };
 
             // when
-            await companyService.AddCompany(companyDto);
-            var company = await companyService.GetById(1);
+            var id = await companyService.AddCompany(companyDto);
+            var company = await companyService.GetById(id);
 
             // then
             Assert.Equal(companyDto.Name, company.Name);

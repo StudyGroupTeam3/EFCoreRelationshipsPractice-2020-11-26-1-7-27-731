@@ -14,8 +14,8 @@ namespace EFCoreRelationshipsPractice.Entities
         public CompanyEntity(CompanyDto companyDto)
         {
             Name = companyDto.Name;
-            ProfileEntity = new ProfileEntity(companyDto.Profile);
-            Employees = companyDto.Employees.Select(employeeDto => new EmployeeEntity(employeeDto)).ToList();
+            ProfileEntity = companyDto.Profile == null ? null : new ProfileEntity(companyDto.Profile);
+            Employees = companyDto.Employees?.Select(employeeDto => new EmployeeEntity(employeeDto)).ToList();
         }
 
         public int Id { get; set; }
