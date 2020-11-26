@@ -9,9 +9,14 @@ namespace EFCoreRelationshipsPractice.Dtos
         {
         }
 
-        public CompanyDto(CompanyEntity conCompanyEntity)
+        public CompanyDto(CompanyEntity companyEntity)
         {
-            Name = conCompanyEntity.Name;
+            Name = companyEntity.Name;
+            Profile = new ProfileDto()
+            {
+                CertId = companyEntity.Profile.CertId,
+                RegisteredCapital = companyEntity.Profile.RegisteredCapital,
+            };
         }
 
         public string Name { get; set; }
