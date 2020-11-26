@@ -141,7 +141,7 @@ namespace EFCoreRelationshipsPracticeTest
         }
 
         [Fact]
-        public async Task Should_create_company_succes_via_company_service()
+        public async Task Should_create_company_success_via_company_service()
         {
             //Given
             var scope = Factory.Services.CreateScope();
@@ -213,6 +213,29 @@ namespace EFCoreRelationshipsPracticeTest
 
             //Then
             Assert.Equal(companyDto, actualCompany);
+        }
+
+        [Fact]
+        public async Task Should_Get_AllCompany_success_via_company_service()
+        {
+            //Given
+            var scope = Factory.Services.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+
+            CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
+
+            CompanyService companyService = new CompanyService(context);
+            List<CompanyDto> companyDtos = GiveMeSomeCompanies();
+            foreach (var company in companyDtos)
+            {
+                await companyService.AddCompany(company);
+            }
+
+            //When
+            List<CompanyDto> actualCompanies = await companyService.GetAll();
+
+            //Then
+            Assert.Equal(2, actualCompanies.Count);
         }
 
         private List<CompanyDto> GiveMeSomeCompanies()
