@@ -23,16 +23,10 @@ namespace EFCoreRelationshipsPracticeTest
     public class CompanyControllerTest : TestBase
     {
         private readonly HttpClient client;
+        private readonly CompanyDto companyDto = new CompanyDto();
         public CompanyControllerTest(CustomWebApplicationFactory<Startup> factory) : base(factory)
         {
             client = GetClient();
-        }
-
-        [Fact]
-        public async Task Should_create_company_employee_profile_success()
-        {
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
             companyDto.Employees = new List<EmployeeDto>()
             {
                 new EmployeeDto()
@@ -47,7 +41,11 @@ namespace EFCoreRelationshipsPracticeTest
                 RegisteredCapital = 100010,
                 CertId = "100",
             };
+        }
 
+        [Fact]
+        public async Task Should_create_company_employee_profile_success()
+        {
             var httpContent = JsonConvert.SerializeObject(companyDto);
             StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
             await client.PostAsync("/companies", content);
@@ -77,23 +75,6 @@ namespace EFCoreRelationshipsPracticeTest
         [Fact]
         public async Task Should_delete_company_and_related_employee_and_profile_success()
         {
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
-            {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19
-                }
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
-            };
-
             var httpContent = JsonConvert.SerializeObject(companyDto);
             StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
 
@@ -110,23 +91,6 @@ namespace EFCoreRelationshipsPracticeTest
         [Fact]
         public async Task Should_create_many_companies_success()
         {
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
-            {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19
-                }
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
-            };
-
             var httpContent = JsonConvert.SerializeObject(companyDto);
             StringContent content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
             await client.PostAsync("/companies", content);
