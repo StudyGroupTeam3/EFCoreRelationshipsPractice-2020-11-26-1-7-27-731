@@ -11,7 +11,7 @@ namespace EFCoreRelationshipsPracticeTest
     {
         public TestBase(CustomWebApplicationFactory<Startup> factory)
         {
-            this.Factory = factory;
+            Factory = factory;
         }
 
         protected CustomWebApplicationFactory<Startup> Factory { get; }
