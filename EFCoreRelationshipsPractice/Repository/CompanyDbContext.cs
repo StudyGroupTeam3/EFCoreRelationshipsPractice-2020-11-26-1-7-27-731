@@ -13,5 +13,14 @@ namespace EFCoreRelationshipsPractice.Repository
         public DbSet<CompanyEntity> Companies { get; set; }
         public DbSet<ProfileEntity> Profiles { get; set; }
         public DbSet<EmployeeEntity> Employees { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CompanyEntity>(
+                builder =>
+                {
+                    builder.HasMany<EmployeeEntity>(e => e.Employees).WithOne().HasForeignKey(e => e.CompanyEntityId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+                });
+        }
     }
 }

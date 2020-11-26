@@ -23,6 +23,7 @@ namespace EFCoreRelationshipsPractice.Entities
         public string Name { get; set; }
         public ProfileEntity Profile { get; set; }
         public List<EmployeeEntity> Employees { get; set; }
+        public int ProfileId { get; set; }
     }
 
     public class ProfileEntity
@@ -57,5 +58,6 @@ namespace EFCoreRelationshipsPractice.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
+        public int CompanyEntityId { get; set; }
     }
 }
