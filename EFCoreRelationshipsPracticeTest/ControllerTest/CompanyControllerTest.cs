@@ -26,6 +26,8 @@ namespace EFCoreRelationshipsPracticeTest
         private readonly CompanyDto companyDto = new CompanyDto();
         private readonly string httpContent;
         private readonly StringContent content;
+        private readonly CompanyDbContext context;
+        private readonly CompanyService companyService;
         public CompanyControllerTest(CustomWebApplicationFactory<Startup> factory) : base(factory)
         {
             client = GetClient();
@@ -45,6 +47,8 @@ namespace EFCoreRelationshipsPracticeTest
             };
             httpContent = JsonConvert.SerializeObject(companyDto);
             content = new StringContent(httpContent, Encoding.UTF8, MediaTypeNames.Application.Json);
+            context = Factory.Services.CreateScope().ServiceProvider.GetRequiredService<CompanyDbContext>();
+            companyService = new CompanyService(context);
         }
 
         [Fact]
@@ -108,22 +112,6 @@ namespace EFCoreRelationshipsPracticeTest
             var scopedServices = scope.ServiceProvider;
 
             CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
-            {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19
-                }
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
-            };
 
             CompanyService companyService = new CompanyService(context);
 
@@ -135,29 +123,6 @@ namespace EFCoreRelationshipsPracticeTest
         [Fact]
         public async Task Should_get_allcompanies_success_via_company_service()
         {
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
-            {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19
-                }
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
-            };
-
-            CompanyService companyService = new CompanyService(context);
-
             await companyService.AddCompany(companyDto);
 
             List<CompanyDto> companyDtos = await companyService.GetAll();
@@ -173,29 +138,6 @@ namespace EFCoreRelationshipsPracticeTest
         [Fact]
         public async Task Should_delete_company_success_via_company_service()
         {
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
-            {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19
-                }
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
-            };
-
-            CompanyService companyService = new CompanyService(context);
-
             var id1 = await companyService.AddCompany(companyDto);
             var id2 = await companyService.AddCompany(companyDto);
 
@@ -208,29 +150,6 @@ namespace EFCoreRelationshipsPracticeTest
         [Fact]
         public async Task Should_get_company_byId_via_company_service()
         {
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
-            {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19
-                }
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
-            };
-
-            CompanyService companyService = new CompanyService(context);
-
             var id = await companyService.AddCompany(companyDto);
             var returnCompanyDto = await companyService.GetById(id);
             Assert.Equal(companyDto.Employees.Count, returnCompanyDto.Employees.Count);
