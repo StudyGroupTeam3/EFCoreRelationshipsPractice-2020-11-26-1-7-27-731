@@ -238,6 +238,30 @@ namespace EFCoreRelationshipsPracticeTest
             Assert.Equal(2, actualCompanies.Count);
         }
 
+        [Fact]
+        public async Task Should_Delete_Company_ByID_success_via_companyService()
+        {
+            //Given
+            var scope = Factory.Services.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+
+            CompanyDbContext context = scopedServices.GetRequiredService<CompanyDbContext>();
+
+            CompanyService companyService = new CompanyService(context);
+            List<CompanyDto> companyDtos = GiveMeSomeCompanies();
+            int testID = 0;
+            foreach (var company in companyDtos)
+            {
+                testID = await companyService.AddCompany(company);
+            }
+
+            //When
+            await companyService.DeleteCompany(testID);
+
+            //Then
+            Assert.Equal(1, context.Companies.Count());
+        }
+
         private List<CompanyDto> GiveMeSomeCompanies()
         {
             CompanyDto companyDto = new CompanyDto();
