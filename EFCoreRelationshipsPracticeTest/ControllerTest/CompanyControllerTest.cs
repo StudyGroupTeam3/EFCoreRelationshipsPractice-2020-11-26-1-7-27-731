@@ -137,7 +137,7 @@ namespace EFCoreRelationshipsPracticeTest
         }
 
         [Fact]
-        public async Task Should_create_many_companies_using_CompanyServices_AddCompany_success()
+        public async Task Should_create_company_using_CompanyServices_AddCompany_success()
         {
             var scope = Factory.Services.CreateScope();
             var scopedServices = scope.ServiceProvider;
@@ -164,6 +164,38 @@ namespace EFCoreRelationshipsPracticeTest
             await companyService.AddCompany(companyDto);
 
             Assert.Equal(1, companyContext.Companies.Count());
+        }
+
+        [Fact]
+        public async Task Should_get_a_company_by_id_using_CompanyServices_GetById_success()
+        {
+            var scope = Factory.Services.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+            var companyContext = scopedServices.GetRequiredService<CompanyDbContext>();
+
+            CompanyDto companyDto = new CompanyDto();
+            companyDto.Name = "IBM";
+            companyDto.Employees = new List<EmployeeDto>()
+            {
+                new EmployeeDto()
+                {
+                    Name = "Tom",
+                    Age = 19,
+                },
+            };
+
+            companyDto.Profile = new ProfileDto()
+            {
+                RegisteredCapital = 100010,
+                CertId = "100",
+            };
+
+            var companyService = new CompanyService(companyContext);
+            await companyService.AddCompany(companyDto);
+
+            var actualCompanyDto = companyService.GetById(0);
+
+            Assert.Equal(1, actualCompanyDto.Id);
         }
     }
 }
