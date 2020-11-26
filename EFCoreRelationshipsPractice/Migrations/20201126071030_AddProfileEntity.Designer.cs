@@ -3,14 +3,16 @@ using System;
 using EFCoreRelationshipsPractice.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EFCoreRelationshipsPractice.Migrations
 {
     [DbContext(typeof(CompanyDbContext))]
-    partial class CompanyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201126071030_AddProfileEntity")]
+    partial class AddProfileEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,36 +28,14 @@ namespace EFCoreRelationshipsPractice.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("ProfileEntityId")
+                    b.Property<int?>("ProfileEntitiesId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfileEntityId");
+                    b.HasIndex("ProfileEntitiesId");
 
                     b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("EFCoreRelationshipsPractice.Entities.EmployeeEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CompanyEntityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyEntityId");
-
-                    b.ToTable("EmployeeEntity");
                 });
 
             modelBuilder.Entity("EFCoreRelationshipsPractice.Entities.ProfileEntity", b =>
@@ -77,16 +57,9 @@ namespace EFCoreRelationshipsPractice.Migrations
 
             modelBuilder.Entity("EFCoreRelationshipsPractice.Entities.CompanyEntity", b =>
                 {
-                    b.HasOne("EFCoreRelationshipsPractice.Entities.ProfileEntity", "ProfileEntity")
+                    b.HasOne("EFCoreRelationshipsPractice.Entities.ProfileEntity", "ProfileEntities")
                         .WithMany()
-                        .HasForeignKey("ProfileEntityId");
-                });
-
-            modelBuilder.Entity("EFCoreRelationshipsPractice.Entities.EmployeeEntity", b =>
-                {
-                    b.HasOne("EFCoreRelationshipsPractice.Entities.CompanyEntity", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("CompanyEntityId");
+                        .HasForeignKey("ProfileEntitiesId");
                 });
 #pragma warning restore 612, 618
         }
