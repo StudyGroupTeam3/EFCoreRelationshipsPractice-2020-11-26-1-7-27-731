@@ -22,14 +22,15 @@ namespace EFCoreRelationshipsPracticeTest
 {
     public class CompanyControllerTest : TestBase
     {
+        private readonly HttpClient client;
         public CompanyControllerTest(CustomWebApplicationFactory<Startup> factory) : base(factory)
         {
+            client = GetClient();
         }
 
         [Fact]
         public async Task Should_create_company_employee_profile_success()
         {
-            var client = GetClient();
             CompanyDto companyDto = new CompanyDto();
             companyDto.Name = "IBM";
             companyDto.Employees = new List<EmployeeDto>()
@@ -76,7 +77,6 @@ namespace EFCoreRelationshipsPracticeTest
         [Fact]
         public async Task Should_delete_company_and_related_employee_and_profile_success()
         {
-            var client = GetClient();
             CompanyDto companyDto = new CompanyDto();
             companyDto.Name = "IBM";
             companyDto.Employees = new List<EmployeeDto>()
@@ -110,7 +110,6 @@ namespace EFCoreRelationshipsPracticeTest
         [Fact]
         public async Task Should_create_many_companies_success()
         {
-            var client = GetClient();
             CompanyDto companyDto = new CompanyDto();
             companyDto.Name = "IBM";
             companyDto.Employees = new List<EmployeeDto>()
