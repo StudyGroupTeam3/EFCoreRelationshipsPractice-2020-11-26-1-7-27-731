@@ -49,13 +49,6 @@ namespace EFCoreRelationshipsPracticeTest
             Assert.Equal(companyDto.Employees[0].Name, returnCompanies[0].Employees[0].Name);
             Assert.Equal(companyDto.Profile.CertId, returnCompanies[0].Profile.CertId);
             Assert.Equal(companyDto.Profile.RegisteredCapital, returnCompanies[0].Profile.RegisteredCapital);
-
-            //var scope = Factory.Services.CreateScope();
-            //var scopedServices = scope.ServiceProvider;
-            //var context = scopedServices.GetRequiredService<CompanyDbContext>();
-            //Assert.Equal(1, context.Companies.ToList().Count);
-            //var firstCompany = await context.Companies.Include(company => company.ProfileEntity).FirstOrDefaultAsync();
-            //Assert.Equal(companyDto.Profile.CertId, firstCompany.ProfileEntity.CertId);
         }
 
         [Fact]
