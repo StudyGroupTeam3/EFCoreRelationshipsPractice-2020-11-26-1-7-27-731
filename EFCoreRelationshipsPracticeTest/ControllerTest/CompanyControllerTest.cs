@@ -20,6 +20,7 @@ using Xunit;
 
 namespace EFCoreRelationshipsPracticeTest
 {
+    [Collection("IntegrationTest")]
     public class CompanyControllerTest : TestBase
     {
         private readonly HttpClient client;
@@ -31,12 +32,18 @@ namespace EFCoreRelationshipsPracticeTest
         public CompanyControllerTest(CustomWebApplicationFactory<Startup> factory) : base(factory)
         {
             client = GetClient();
+            companyDto.Name = "IBM";
             companyDto.Employees = new List<EmployeeDto>()
             {
                 new EmployeeDto()
                 {
                     Name = "Tom",
                     Age = 19
+                },
+                new EmployeeDto()
+                {
+                    Name = "Jim",
+                    Age = 21
                 }
             };
 
@@ -67,11 +74,6 @@ namespace EFCoreRelationshipsPracticeTest
             Assert.Equal(companyDto.Employees[0].Name, returnCompanies[0].Employees[0].Name);
             Assert.Equal(companyDto.Profile.CertId, returnCompanies[0].Profile.CertId);
             Assert.Equal(companyDto.Profile.RegisteredCapital, returnCompanies[0].Profile.RegisteredCapital);
-
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            var context = scopedServices.GetRequiredService<CompanyDbContext>();
 
             Assert.Equal(1, context.Companies.ToList().Count());
             var firstCompany = await context.Companies.Include(company => company.Profile).FirstOrDefaultAsync();
@@ -152,11 +154,23 @@ namespace EFCoreRelationshipsPracticeTest
         {
             var id = await companyService.AddCompany(companyDto);
             var returnCompanyDto = await companyService.GetById(id);
+
             Assert.Equal(companyDto.Employees.Count, returnCompanyDto.Employees.Count);
             Assert.Equal(companyDto.Employees[0].Age, returnCompanyDto.Employees[0].Age);
             Assert.Equal(companyDto.Employees[0].Name, returnCompanyDto.Employees[0].Name);
             Assert.Equal(companyDto.Profile.CertId, returnCompanyDto.Profile.CertId);
             Assert.Equal(companyDto.Profile.RegisteredCapital, returnCompanyDto.Profile.RegisteredCapital);
         }
+
+        //[Fact]
+        //public async Task Should_delete_company_success_via_company_service1()
+        //{
+        //    var id = await companyService.AddCompany(companyDto);
+
+        //    await companyService.DeleteCompany(id);
+
+        //    Assert.Equal(0, context.Companies.Count());
+        //    Assert.Equal(0, context.Employees.Count());
+        //}
     }
 }
