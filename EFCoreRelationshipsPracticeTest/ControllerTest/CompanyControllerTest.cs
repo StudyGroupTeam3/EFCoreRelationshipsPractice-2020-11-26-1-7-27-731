@@ -15,8 +15,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Xunit;
 
-namespace EFCoreRelationshipsPracticeTest
+namespace EFCoreRelationshipsPracticeTest.ControllerTest
 {
+    [Collection("UsingInMemoryDB")]
     public class CompanyControllerTest : TestBase
     {
         public CompanyControllerTest(CustomWebApplicationFactory<Startup> factory) : base(factory)
@@ -27,21 +28,11 @@ namespace EFCoreRelationshipsPracticeTest
         public async Task Should_create_company_employee_profile_success()
         {
             var client = GetClient();
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
+            CompanyDto companyDto = new CompanyDto
             {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19,
-                },
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
+                Name = "IBM",
+                Employees = new List<EmployeeDto>() { new EmployeeDto() { Name = "Tom", Age = 19 } },
+                Profile = new ProfileDto() { RegisteredCapital = 100010, CertId = "100" }
             };
 
             var httpContent = JsonConvert.SerializeObject(companyDto);
@@ -53,7 +44,7 @@ namespace EFCoreRelationshipsPracticeTest
 
             var returnCompanies = JsonConvert.DeserializeObject<List<CompanyDto>>(body);
 
-            Assert.Equal(1, returnCompanies.Count);
+            Assert.Single(returnCompanies);
             Assert.Equal(companyDto.Employees.Count, returnCompanies[0].Employees.Count);
             Assert.Equal(companyDto.Employees[0].Age, returnCompanies[0].Employees[0].Age);
             Assert.Equal(companyDto.Employees[0].Name, returnCompanies[0].Employees[0].Name);
@@ -72,21 +63,11 @@ namespace EFCoreRelationshipsPracticeTest
         public async Task Should_delete_company_and_related_employee_and_profile_success()
         {
             var client = GetClient();
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
+            CompanyDto companyDto = new CompanyDto
             {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19,
-                },
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
+                Name = "IBM",
+                Employees = new List<EmployeeDto>() { new EmployeeDto() { Name = "Tom", Age = 19 } },
+                Profile = new ProfileDto() { RegisteredCapital = 100010, CertId = "100" }
             };
 
             var httpContent = JsonConvert.SerializeObject(companyDto);
@@ -99,28 +80,18 @@ namespace EFCoreRelationshipsPracticeTest
 
             var returnCompanies = JsonConvert.DeserializeObject<List<CompanyDto>>(body);
 
-            Assert.Equal(0, returnCompanies.Count);
+            Assert.Empty(returnCompanies);
         }
 
         [Fact]
         public async Task Should_create_many_companies_success()
         {
             var client = GetClient();
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
+            CompanyDto companyDto = new CompanyDto
             {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19,
-                },
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
+                Name = "IBM",
+                Employees = new List<EmployeeDto>() { new EmployeeDto() { Name = "Tom", Age = 19 } },
+                Profile = new ProfileDto() { RegisteredCapital = 100010, CertId = "100" }
             };
 
             var httpContent = JsonConvert.SerializeObject(companyDto);
@@ -134,109 +105,6 @@ namespace EFCoreRelationshipsPracticeTest
             var returnCompanies = JsonConvert.DeserializeObject<List<CompanyDto>>(body);
 
             Assert.Equal(2, returnCompanies.Count);
-        }
-
-        [Fact]
-        public async Task Should_create_company_using_CompanyService_AddCompany_success()
-        {
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-            var companyContext = scopedServices.GetRequiredService<CompanyDbContext>();
-            companyContext.Database.EnsureDeleted();
-            companyContext.Database.EnsureCreated();
-
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
-            {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19,
-                },
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
-            };
-
-            var companyService = new CompanyService(companyContext);
-            await companyService.AddCompany(companyDto);
-
-            Assert.Equal(1, companyContext.Companies.Count());
-        }
-
-        [Fact]
-        public async Task Should_get_a_company_by_id_using_CompanyService_GetById_success()
-        {
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-            var companyContext = scopedServices.GetRequiredService<CompanyDbContext>();
-            companyContext.Database.EnsureDeleted();
-            companyContext.Database.EnsureCreated();
-
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
-            {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19,
-                },
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
-            };
-
-            var companyService = new CompanyService(companyContext);
-            await companyService.AddCompany(companyDto);
-
-            var actualCompanyEntity = companyService.GetById(1);
-
-            Assert.Equal(1, actualCompanyEntity.Id);
-        }
-
-        [Fact]
-        public async Task Should_delete_a_company_by_id_using_CompanyService_DeleteCompany_success()
-        {
-            var scope = Factory.Services.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-            var companyContext = scopedServices.GetRequiredService<CompanyDbContext>();
-            companyContext.Database.EnsureDeleted();
-            companyContext.Database.EnsureCreated();
-
-            CompanyDto companyDto = new CompanyDto();
-            companyDto.Name = "IBM";
-            companyDto.Employees = new List<EmployeeDto>()
-            {
-                new EmployeeDto()
-                {
-                    Name = "Tom",
-                    Age = 19,
-                },
-            };
-
-            companyDto.Profile = new ProfileDto()
-            {
-                RegisteredCapital = 100010,
-                CertId = "100",
-            };
-
-            var companyService = new CompanyService(companyContext);
-            await companyService.AddCompany(companyDto);
-
-            await companyService.DeleteCompany(1);
-
-            var i = companyContext.Employees.Count();
-            var j = companyContext.Profiles.Count();
-
-            Assert.Equal(0, companyContext.Companies.Count());
         }
     }
 }
