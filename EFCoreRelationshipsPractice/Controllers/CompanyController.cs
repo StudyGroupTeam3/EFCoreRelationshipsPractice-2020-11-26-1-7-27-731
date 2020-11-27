@@ -23,7 +23,6 @@ namespace EFCoreRelationshipsPractice.Controllers
         public async Task<ActionResult<IEnumerable<CompanyDto>>> List()
         {
             var companyDtos = await this.companyService.GetAll();
-
             return Ok(companyDtos);
         }
 
