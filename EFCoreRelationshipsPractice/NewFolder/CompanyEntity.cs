@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -41,6 +42,11 @@ namespace EFCoreRelationshipsPractice.NewFolder
         public int ID { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
+
+        public CompanyEntity Company { get; set; }
+
+        [ForeignKey("CompanyIdForeignKey")]
+        public int CompanyID { get; set; }
     }
 
     public class ProfileEntity
@@ -58,5 +64,9 @@ namespace EFCoreRelationshipsPractice.NewFolder
         public int ID { get; set; }
         public int RegisteredCapital { get; set; }
         public string CertId { get; set; }
+        public CompanyEntity Company { get; set; }
+
+        [ForeignKey("CompanyIdForeignKey")]
+        public int CompanyID { get; set; }
     }
 }
