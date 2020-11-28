@@ -1,7 +1,9 @@
 ﻿using EFCoreRelationshipsPractice.Dtos;
 using EFCoreRelationshipsPractice.Repository;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreRelationshipsPractice.Entities
 {
@@ -21,6 +23,7 @@ namespace EFCoreRelationshipsPractice.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public ProfileEntity ProfileEntity { get; set; }
-        public List<EmployeeEntity> Employees { get; set; }
+        [ForeignKey("CompanyId")]
+        public ICollection<EmployeeEntity> Employees { get; set; }
     }
 }

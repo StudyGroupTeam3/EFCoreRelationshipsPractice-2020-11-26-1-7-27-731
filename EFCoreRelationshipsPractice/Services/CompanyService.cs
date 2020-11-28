@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.Forms;
 
 namespace EFCoreRelationshipsPractice.Services
 {
@@ -50,19 +49,6 @@ namespace EFCoreRelationshipsPractice.Services
                 .Include(company => company.ProfileEntity)
                 .Include(company => company.Employees)
                 .FirstOrDefaultAsync(company => company.Id == id);
-
-            var foundProfile = await companyDbContext.Profiles
-                .FirstOrDefaultAsync(profile => profile.Id == foundCompany.ProfileEntity.Id);
-            companyDbContext.Profiles.Remove(foundProfile);
-
-            foreach (var employeeEntity in foundCompany.Employees)
-            {
-                var foundEmployee = await companyDbContext.Employees.FirstOrDefaultAsync(employee => employee.Id == employeeEntity.Id);
-                if (foundEmployee != null)
-                {
-                    companyDbContext.Employees.Remove(foundEmployee);
-                }
-            }
 
             companyDbContext.Companies.Remove(foundCompany);
 

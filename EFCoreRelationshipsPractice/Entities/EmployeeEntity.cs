@@ -1,4 +1,5 @@
-﻿using EFCoreRelationshipsPractice.Dtos;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using EFCoreRelationshipsPractice.Dtos;
 
 namespace EFCoreRelationshipsPractice.Entities
 {
@@ -17,5 +18,7 @@ namespace EFCoreRelationshipsPractice.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
+        [ForeignKey("CompanyId")]
+        public int CompanyId { get; set; }
     }
 }

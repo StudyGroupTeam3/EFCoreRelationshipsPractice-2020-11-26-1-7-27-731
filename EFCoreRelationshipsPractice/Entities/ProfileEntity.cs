@@ -1,4 +1,5 @@
 ﻿using EFCoreRelationshipsPractice.Dtos;
+using EFCoreRelationshipsPractice.Entities;
 
 namespace EFCoreRelationshipsPractice.Repository
 {
@@ -17,5 +18,7 @@ namespace EFCoreRelationshipsPractice.Repository
         public int Id { get; set; }
         public int RegisteredCapital { get; set; }
         public string CertId { get; set; }
+        public CompanyEntity Company { get; set; }
+        public int CompanyId { get; set; }
     }
 }
