@@ -26,6 +26,7 @@ namespace EFCoreRelationshipsPractice.Entities
         public int Age { get; set; }
 
         public CompanyEntity Company { get; set; }
+
         [ForeignKey("CompanyIdForeignKey")]
         public int CompanyId { get; set; }
     }

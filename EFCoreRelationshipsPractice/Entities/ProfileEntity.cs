@@ -22,7 +22,9 @@ namespace EFCoreRelationshipsPractice.Entities
         public int Id { get; set; }
         public int RegisteredCapital { get; set; }
         public string CertId { get; set; }
+
         public CompanyEntity Company { get; set; }
+
         [ForeignKey("CompanyIdForeignKey")]
         public int CompanyId { get; set; }
     }

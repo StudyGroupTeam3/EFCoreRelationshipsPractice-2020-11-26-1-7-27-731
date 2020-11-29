@@ -69,9 +69,13 @@ namespace EFCoreRelationshipsPracticeTest
             var returnCompanies = JsonConvert.DeserializeObject<List<CompanyDto>>(body);
 
             Assert.Equal(1, returnCompanies.Count);
-            Assert.Equal(companyDto.Employees.Count, returnCompanies[0].Employees.Count);
-            Assert.Equal(companyDto.Employees[0].Age, returnCompanies[0].Employees[0].Age);
-            Assert.Equal(companyDto.Employees[0].Name, returnCompanies[0].Employees[0].Name);
+            Assert.Equal(2, returnCompanies[0].Employees.Count);
+
+            var orderedReturnEmployees = returnCompanies[0].Employees.OrderBy(e => e.Age).ToList();
+            var orderedOriginalEmployees = companyDto.Employees.OrderBy(e => e.Age).ToList();
+
+            Assert.Equal(orderedReturnEmployees[0].Age, orderedOriginalEmployees[0].Age);
+            Assert.Equal(orderedReturnEmployees[0].Name, orderedOriginalEmployees[0].Name);
             Assert.Equal(companyDto.Profile.CertId, returnCompanies[0].Profile.CertId);
             Assert.Equal(companyDto.Profile.RegisteredCapital, returnCompanies[0].Profile.RegisteredCapital);
 
