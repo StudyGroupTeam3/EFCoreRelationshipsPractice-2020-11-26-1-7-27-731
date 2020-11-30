@@ -24,6 +24,7 @@ namespace EFCoreRelationshipsPractice.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public ProfileEntity ProfileEntity { get; set; }
+        [ForeignKey("CompanyId")]
         public List<EmployeeEntity> Employees { get; set; }
     }
 
@@ -42,10 +43,7 @@ namespace EFCoreRelationshipsPractice.Entities
         public int Id { get; set; }
         public int RegisteredCapital { get; set; }
         public string CertId { get; set; }
-
         public CompanyEntity Company { get; set; }
-
-        [ForeignKey("CompanyIdForeignKey")]
         public int CompanyId { get; set; }
     }
 
@@ -64,5 +62,7 @@ namespace EFCoreRelationshipsPractice.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
+        [ForeignKey("CompanyId")]
+        public int CompanyId { get; set; }
     }
 }

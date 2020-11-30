@@ -13,6 +13,7 @@ using Xunit;
 
 namespace EFCoreRelationshipsPracticeTest
 {
+    [Collection("TestClass1")]
     public class CompanyControllerTest : TestBase
     {
         public CompanyControllerTest(CustomWebApplicationFactory<Startup> factory) : base(factory)

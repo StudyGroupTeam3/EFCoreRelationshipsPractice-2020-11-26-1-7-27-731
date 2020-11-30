@@ -41,7 +41,7 @@ namespace EFCoreRelationshipsPractice.Services
 
         public async Task DeleteCompany(int id)
         {
-            var foundCompany = await companyDbContext.Companies.FirstOrDefaultAsync(companyEntity => companyEntity.Id == id).Include(company => company.Employees);
+            var foundCompany = await companyDbContext.Companies.Include(company => company.Employees).FirstOrDefaultAsync(companyEntity => companyEntity.Id == id);
             this.companyDbContext.Companies.Remove(foundCompany);
             await this.companyDbContext.SaveChangesAsync();
         }

@@ -13,5 +13,13 @@ namespace EFCoreRelationshipsPractice.Repository
         public DbSet<CompanyEntity> Companies { get; set; }
         public DbSet<ProfileEntity> Profiles { get; set; }
         public DbSet<EmployeeEntity> Employees { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CompanyEntity>()
+                .HasOne(a => a.ProfileEntity)
+                .WithOne(b => b.Company)
+                .HasForeignKey<ProfileEntity>(b => b.CompanyId);
+        }
     }
 }
