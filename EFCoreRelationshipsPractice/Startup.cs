@@ -52,8 +52,14 @@ namespace EFCoreRelationshipsPractice
             {
                 using (var context = scope.ServiceProvider.GetService<CompanyDbContext>())
                 {
-                    context.Database.EnsureDeleted();
-                    context.Database.EnsureCreated();
+                    //context.Database.EnsureDeleted();
+                    //context.Database.EnsureCreated();
+                    //context.Database.Migrate(); // 每一回启动都会调用Migrations里面的所有脚本
+
+                    if (context.Database.ProviderName.ToLower().Contains("mysql"))
+                    {
+                        context.Database.Migrate();
+                    }
                 }
             }
 
